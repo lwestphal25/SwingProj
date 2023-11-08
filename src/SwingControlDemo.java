@@ -9,7 +9,7 @@ public class SwingControlDemo implements ActionListener {
     private JMenuBar mb;
     private JMenu file, edit, help;
     private JMenuItem cut, copy, paste, selectAll;
-    private JTextArea ta; //typing area
+    private JTextArea ta, ta1; //typing area
     private int WIDTH=800;
     private int HEIGHT=700;
 
@@ -52,9 +52,15 @@ public class SwingControlDemo implements ActionListener {
         //end menu at top
 
         ta = new JTextArea();
-        ta.setBounds(50, 5, WIDTH-100, HEIGHT-50);
+       ta1 = new JTextArea();
+
+        ta.setBounds(50, 0, WIDTH-100, HEIGHT-50);
+        ta1.setBounds(50, 100, WIDTH-100, HEIGHT-150);
+
         mainFrame.add(mb);  //add menu bar
         mainFrame.add(ta);//add typing area
+        mainFrame.add(ta1);//add typing area
+
         mainFrame.setJMenuBar(mb); //set menu bar
 
         statusLabel = new JLabel("", JLabel.CENTER);
@@ -79,23 +85,30 @@ public class SwingControlDemo implements ActionListener {
         JButton submitButton = new JButton("Submit");
         JButton cancelButton = new JButton("Cancel");
         JButton resetButton = new JButton("Reset");
+        JButton startButton = new JButton("Start");
 
 
         okButton.setActionCommand("OK");
         submitButton.setActionCommand("Submit");
         cancelButton.setActionCommand("Cancel");
         resetButton.setActionCommand("Reset");
+        startButton.setActionCommand("Start");
+
 
         okButton.addActionListener(new ButtonClickListener());
         submitButton.addActionListener(new ButtonClickListener());
         cancelButton.addActionListener(new ButtonClickListener());
         resetButton.addActionListener(new ButtonClickListener());
+        startButton.addActionListener(new ButtonClickListener());
+
 
 
         controlPanel.add(okButton);
         controlPanel.add(submitButton);
         controlPanel.add(cancelButton);
         controlPanel.add(resetButton);
+        controlPanel.add(startButton);
+
 
         mainFrame.setVisible(true);
     }
@@ -124,7 +137,10 @@ public class SwingControlDemo implements ActionListener {
                 statusLabel.setText("Cancel Button clicked.");
             } else if (command.equals("Reset")){
                 statusLabel.setText("Reset Button clicked.");
-            } else {
+            } else if (command.equals("Start")) {
+                statusLabel.setText("Start Button clicked.");
+            }
+            else {
                 statusLabel.setText("No Button Clicked");
             }
         }
