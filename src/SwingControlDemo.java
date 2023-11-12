@@ -26,7 +26,7 @@ public class SwingControlDemo implements ActionListener {
     private void prepareGUI() {
         mainFrame = new JFrame("Java SWING Examples");
         mainFrame.setSize(WIDTH, HEIGHT);
-        mainFrame.setLayout(new GridLayout(3, 1));
+        mainFrame.setLayout(new GridLayout(4, 1));
 
         //menu at top
         cut = new JMenuItem("cut");
@@ -52,7 +52,7 @@ public class SwingControlDemo implements ActionListener {
         //end menu at top
 
         ta = new JTextArea();
-       ta1 = new JTextArea();
+        ta1 = new JTextArea();
 
         ta.setBounds(50, 0, WIDTH-100, HEIGHT-50);
         ta1.setBounds(50, 100, WIDTH-100, HEIGHT-150);
