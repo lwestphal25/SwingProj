@@ -1,12 +1,15 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import javax.swing.*;
 
 public class ControlPanelProj implements ActionListener {
     private JFrame mainFrame;
 
-    private JLabel statusLabel;
-    private JPanel searchPanel, resultsPanel;
+    private JLabel urlLabel, keywordLabel;
+    private JPanel searchPanel, resultsPanel, urlPanel, keywordPanel;
     private JMenuBar mb;
     private JMenu file, edit, help;
     private JMenuItem cut, copy, paste, selectAll;
@@ -41,28 +44,43 @@ public class ControlPanelProj implements ActionListener {
 
     private void showEventDemo() {
 
-        JButton search = new JButton("search");
-        search.setActionCommand("search");
+        JButton search = new JButton("Search");
+        search.setActionCommand("Search");
         search.addActionListener(new ButtonClickListener());
 
-        url = new JTextField("enter url", SwingConstants.CENTER);
-        keyword = new JTextField("enter keyword", SwingConstants.CENTER);
+        url = new JTextField();
+        keyword = new JTextField();
+
         results = new JTextArea();
+
+        urlLabel = new JLabel("URL:", SwingConstants.CENTER);
+        keywordLabel = new JLabel("Keyword:", SwingConstants.CENTER);
 
         searchPanel = new JPanel();
         searchPanel.setLayout(new GridLayout(1, 2));
         resultsPanel = new JPanel();
         resultsPanel.setLayout(new BorderLayout());
+        urlPanel = new JPanel();
+        urlPanel.setLayout(new BorderLayout());
+        keywordPanel = new JPanel();
+        keywordPanel.setLayout(new BorderLayout());
 
         mainFrame.add(searchPanel);
+        searchPanel.add(urlPanel);
+        searchPanel.add(keywordPanel);
+        urlPanel.add(urlLabel, BorderLayout.NORTH);
+        urlPanel.add(url, BorderLayout.CENTER);
+        keywordPanel.add(keywordLabel, BorderLayout.NORTH);
+        keywordPanel.add(keyword, BorderLayout.CENTER);
         mainFrame.add(resultsPanel);
-
-
-
-        searchPanel.add(url);
-        searchPanel.add(keyword);
         resultsPanel.add(search, BorderLayout.NORTH);
         resultsPanel.add(results, BorderLayout.CENTER);
+
+
+
+
+
+
 
 
 
@@ -79,19 +97,48 @@ public class ControlPanelProj implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
 
-            if (command.equals("OK")) {
-                statusLabel.setText("Ok Button clicked.");
-            } else if (command.equals("Submit")) {
-                statusLabel.setText("Submit Button clicked.");
-            } else if (command.equals("Cancel")){
-                statusLabel.setText("Cancel Button clicked.");
-            } else if (command.equals("Reset")){
-                statusLabel.setText("Reset Button clicked.");
-            } else if (command.equals("Start")) {
-                statusLabel.setText("Start Button clicked.");
-            }
-            else {
-                statusLabel.setText("No Button Clicked");
+            if (command.equals("Search")) {
+                try {
+                    URL url = new URL("https://www.milton.edu/");
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(url.openStream())
+                    );
+                    String line;
+                    while ( (line = reader.readLine()) != null ) {
+                        if(line.contains("href=") && line.contains("www")){
+                            //int beginIndex = line.indexOf("href=") + 6;
+                            int beginIndex = 0;
+                            //System.out.println("og: "+ line );
+                            if (line.contains("https:")){
+                                beginIndex = line.indexOf("https:");
+                            }
+                            if (!line.contains("https:")){
+                                beginIndex = line.indexOf("www");
+                            }
+                            int endIndex = 0;
+                            if (line.substring(beginIndex).contains("\'")){
+                                endIndex = line.indexOf("\'", beginIndex+1);
+                            }
+                            if (line.substring(beginIndex).contains("\"")){
+                                endIndex = line.indexOf("\"", beginIndex+1);
+                            }
+                            if (line.substring(beginIndex).contains("\"") && line.substring(beginIndex).contains("\'")){
+                                if (line.indexOf("\'") > line.indexOf("\"")){
+                                    endIndex = line.indexOf("\"", beginIndex+1);
+                                }else{
+                                    endIndex = line.indexOf("\'", beginIndex+1);
+                                }
+                            }
+                            String substring = line.substring(beginIndex, endIndex);
+                            //System.out.println(substring);
+                            results.setText(substring);
+                        }
+                    }
+
+                    reader.close();
+                } catch(Exception ex) {
+                    System.out.println(ex);
+                }
             }
         }
     }
