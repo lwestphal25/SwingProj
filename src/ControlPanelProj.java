@@ -10,10 +10,11 @@ public class ControlPanelProj implements ActionListener {
 
     private JLabel urlLabel, keywordLabel;
     private JPanel searchPanel, resultsPanel, urlPanel, keywordPanel;
+    private JScrollPane scroll;
     private JMenuBar mb;
     private JMenu file, edit, help;
     private JMenuItem cut, copy, paste, selectAll;
-    private JTextField url, keyword;
+    private JTextArea url, keyword;
     private JTextArea results;
     private int WIDTH=800;
     private int HEIGHT=700;
@@ -48,10 +49,11 @@ public class ControlPanelProj implements ActionListener {
         search.setActionCommand("Search");
         search.addActionListener(new ButtonClickListener());
 
-        url = new JTextField();
-        keyword = new JTextField();
+        url = new JTextArea();
+        keyword = new JTextArea();
 
         results = new JTextArea();
+        JScrollPane scroll = new JScrollPane(results);
 
         urlLabel = new JLabel("URL:", SwingConstants.CENTER);
         keywordLabel = new JLabel("Keyword:", SwingConstants.CENTER);
@@ -74,7 +76,7 @@ public class ControlPanelProj implements ActionListener {
         keywordPanel.add(keyword, BorderLayout.CENTER);
         mainFrame.add(resultsPanel);
         resultsPanel.add(search, BorderLayout.NORTH);
-        resultsPanel.add(results, BorderLayout.CENTER);
+        resultsPanel.add(scroll, BorderLayout.CENTER);
 
 
 
@@ -99,7 +101,9 @@ public class ControlPanelProj implements ActionListener {
 
             if (command.equals("Search")) {
                 try {
-                    URL url = new URL("https://www.milton.edu/");
+                    String URL = url.getText();
+                    String KEYWORD = keyword.getText();
+                    URL url = new URL(URL);
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(url.openStream())
                     );
@@ -130,8 +134,13 @@ public class ControlPanelProj implements ActionListener {
                                 }
                             }
                             String substring = line.substring(beginIndex, endIndex);
-                            //System.out.println(substring);
-                            results.setText(substring);
+
+                            if (substring.contains(KEYWORD)){
+                                results.append(substring+ "\n");
+                            }
+
+
+
                         }
                     }
 
