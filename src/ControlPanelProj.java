@@ -10,7 +10,7 @@ public class ControlPanelProj implements ActionListener {
 
     private JLabel urlLabel, keywordLabel;
     private JPanel searchPanel, resultsPanel, urlPanel, keywordPanel;
-    private JScrollPane scroll;
+    private JScrollPane scroll_url, scroll_keyword, scroll_results;
     private JMenuBar mb;
     private JMenu file, edit, help;
     private JMenuItem cut, copy, paste, selectAll;
@@ -50,10 +50,13 @@ public class ControlPanelProj implements ActionListener {
         search.addActionListener(new ButtonClickListener());
 
         url = new JTextArea();
+        JScrollPane scroll_url = new JScrollPane(url);
+
         keyword = new JTextArea();
+        JScrollPane scroll_keyword = new JScrollPane(keyword);
 
         results = new JTextArea();
-        JScrollPane scroll = new JScrollPane(results);
+        JScrollPane scroll_results = new JScrollPane(results);
 
         urlLabel = new JLabel("URL:", SwingConstants.CENTER);
         keywordLabel = new JLabel("Keyword:", SwingConstants.CENTER);
@@ -71,12 +74,12 @@ public class ControlPanelProj implements ActionListener {
         searchPanel.add(urlPanel);
         searchPanel.add(keywordPanel);
         urlPanel.add(urlLabel, BorderLayout.NORTH);
-        urlPanel.add(url, BorderLayout.CENTER);
+        urlPanel.add(scroll_url, BorderLayout.CENTER);
         keywordPanel.add(keywordLabel, BorderLayout.NORTH);
-        keywordPanel.add(keyword, BorderLayout.CENTER);
+        keywordPanel.add(scroll_keyword, BorderLayout.CENTER);
         mainFrame.add(resultsPanel);
         resultsPanel.add(search, BorderLayout.NORTH);
-        resultsPanel.add(scroll, BorderLayout.CENTER);
+        resultsPanel.add(scroll_results, BorderLayout.CENTER);
 
 
 
@@ -100,6 +103,7 @@ public class ControlPanelProj implements ActionListener {
             String command = e.getActionCommand();
 
             if (command.equals("Search")) {
+                results.setText("");
                 try {
                     String URL = url.getText();
                     String KEYWORD = keyword.getText();
