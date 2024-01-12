@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class ControlPanelProj implements ActionListener {
     private JFrame mainFrame;
@@ -100,6 +101,7 @@ public class ControlPanelProj implements ActionListener {
 
    private class ButtonClickListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            ArrayList<String> links = new ArrayList<String>();
             String command = e.getActionCommand();
 
             if (command.equals("Search")) {
@@ -112,7 +114,7 @@ public class ControlPanelProj implements ActionListener {
                             new InputStreamReader(url.openStream())
                     );
                     String line;
-                    while ( (line = reader.readLine()) != null ) {
+                    if ( (line = reader.readLine()) != null ) {
                         if(line.contains("href=") && line.contains("www")){
                             //int beginIndex = line.indexOf("href=") + 6;
                             int beginIndex = 0;
@@ -138,14 +140,29 @@ public class ControlPanelProj implements ActionListener {
                                 }
                             }
                             String substring = line.substring(beginIndex, endIndex);
-
+                            String link = null;
                             if (substring.contains(KEYWORD)){
-                                results.append(substring+ "\n");
+                                link = substring;  
                             }
+
+                            if (!links.contains(link)){
+                                links.add(link);
+                            }
+
+
+                           
 
 
 
                         }
+
+                    }
+                    for (String i : links){
+                       if (i != null){
+                           results.append(i+ "\n");
+                           System.out.println(i);
+                       }
+                        
                     }
 
                     reader.close();
