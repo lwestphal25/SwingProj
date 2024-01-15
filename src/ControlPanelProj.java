@@ -114,8 +114,8 @@ public class ControlPanelProj implements ActionListener {
                             new InputStreamReader(url.openStream())
                     );
                     String line;
-                    if ( (line = reader.readLine()) != null ) {
-                        if(line.contains("href=") && line.contains("www")){
+                    while ( (line = reader.readLine()) != null ) {
+                        while(line.contains("href=") && line.contains("www")){
                             //int beginIndex = line.indexOf("href=") + 6;
                             int beginIndex = 0;
                             //System.out.println("og: "+ line );
@@ -148,6 +148,7 @@ public class ControlPanelProj implements ActionListener {
                             if (!links.contains(link)){
                                 links.add(link);
                             }
+                            line = line.substring(endIndex);
 
 
                            
@@ -155,6 +156,7 @@ public class ControlPanelProj implements ActionListener {
 
 
                         }
+
 
                     }
                     for (String i : links){
